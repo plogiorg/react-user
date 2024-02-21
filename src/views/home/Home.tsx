@@ -45,40 +45,40 @@ export default function Home() {
           <Filters />
           <Stack spacing={2} sx={{ overflow: 'auto' }}>
             <ItemCard
-              title="A Stylish Apt, 5 min walk to Queen Victoria Market"
-              category="Entire apartment rental in Collingwood"
+              title="A Cool and fastest way to deliver your prodducts"
+              category="Entire fleet to deliver in Riyadh"
               rareFind
               image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
             />
             <ItemCard
-              title="Designer NY style loft"
-              category="Entire loft in central business district"
+              title="Warehouse Rentals"
+              category="Entire warehoses rental in business district"
               liked
               image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
             />
             <ItemCard
-              title="5 minute walk from University of Melbourne"
-              category="Entire rental unit in Carlton"
+              title="5 minute delivery guranteed"
+              category="Entire delivery unit in Carlton"
               image="https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"
             />
             <ItemCard
-              title="Magnificent apartment next to public transport"
-              category="Entire apartment rental in Collingwood"
+              title="Magnificent ways to dispatch you're workflow"
+              category="Entire fleet to dispatch at your hand"
               image="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400"
             />
             <ItemCard
-              title="Next to shoppng mall and public transport"
-              category="Entire apartment rental in Collingwood"
+              title="One click delivery"
+              category="Entire fleet to dispatch at your hand"
               image="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=400"
             />
             <ItemCard
-              title="Endless ocean view"
-              category="A private room in a shared apartment in Docklands"
+              title="Endless new cars to rent"
+              category="An Amazing Cars To Rent"
               image="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400"
             />
             <ItemCard
-              title="A Stylish Apt, 5 min walk to Queen Victoria Market"
-              category="one bedroom apartment in Collingwood"
+              title="Single Delivery Hero as an army"
+              category="Delivery Hero that can reach your loaction in a bit"
               image="https://images.unsplash.com/photo-1481437156560-3205f6a55735?auto=format&fit=crop&w=400"
             />
           </Stack>
