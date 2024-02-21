@@ -35,7 +35,7 @@ export default function HeaderSection() {
           <MapsHomeWorkIcon />
         </IconButton>
         <Typography component="h1" fontWeight="xl">
-          Acme Rental
+          Pi Logistics
         </Typography>
       </Box>
 
@@ -53,8 +53,8 @@ export default function HeaderSection() {
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
           />
           <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Typography level="title-sm">Siriwat K.</Typography>
-            <Typography level="body-xs">siriwatk@test.com</Typography>
+            <Typography level="title-sm">Pi User</Typography>
+            <Typography level="body-xs">admin@pilogi.app</Typography>
           </Box>
         </Box>
         <ColorSchemeToggle sx={{ alignSelf: 'center' }} />
