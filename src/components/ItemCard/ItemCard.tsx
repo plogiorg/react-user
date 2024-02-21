@@ -132,7 +132,7 @@ export default function ItemCard(props: ItemCardProps) {
           sx={{ my: 0.25 }}
         >
           <Typography level="body-xs" startDecorator={<FmdGoodRoundedIcon />}>
-            Collingwood VIC
+            Riyadh Test
           </Typography>
           <Typography level="body-xs" startDecorator={<KingBedRoundedIcon />}>
             1 bed
@@ -158,7 +158,7 @@ export default function ItemCard(props: ItemCardProps) {
             4.0
           </Typography>
           <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: 'right' }}>
-            <strong>$540</strong> <Typography level="body-md">total</Typography>
+            <strong>540Pi</strong> <Typography level="body-md">total</Typography>
           </Typography>
         </Stack>
       </CardContent>
