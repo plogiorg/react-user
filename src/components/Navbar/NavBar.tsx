@@ -1,7 +1,7 @@
 import { Box, IconButton } from '@mui/joy';
 import Typography from '@mui/joy/Typography';
 import Avatar from '@mui/joy/Avatar';
-import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ColorSchemeToggle from "../ThemeToggler/ColorSchemeToggle.tsx";
 
 export default function HeaderSection() {
@@ -32,7 +32,7 @@ export default function HeaderSection() {
         }}
       >
         <IconButton size="sm" variant="soft">
-          <MapsHomeWorkIcon />
+          <LocalShippingIcon />
         </IconButton>
         <Typography component="h1" fontWeight="xl">
           Pi Logistics
