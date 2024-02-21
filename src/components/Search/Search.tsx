@@ -12,7 +12,7 @@ export default function Search() {
         <FormControl sx={{ flex: 1 }}>
           <Input
             placeholder="Search"
-            value={'Melbourne'}
+            value={'Delivery'}
             startDecorator={<SearchRoundedIcon />}
             aria-label="Search"
           />
@@ -21,7 +21,7 @@ export default function Search() {
           Search
         </Button>
       </Stack>
-      <Typography level="body-sm">232 stays in Melbourne, Australia</Typography>
+      <Typography level="body-sm">232 Services in Riyadh, Saudi Arabia</Typography>
     </div>
   );
 }
