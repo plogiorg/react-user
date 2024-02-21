@@ -10,8 +10,8 @@ import ModalClose from '@mui/joy/ModalClose';
 import Stack from '@mui/joy/Stack';
 import Slider, { sliderClasses } from '@mui/joy/Slider';
 import FilterAltOutlined from '@mui/icons-material/FilterAltOutlined';
-import CountrySelector from './CountrySelector';
-import OrderSelector from './OrderSelector';
+import OrderSelector from "../OrderSelector/OrderSelector.tsx";
+import CountrySelector from "../CountrySelector/CountrySelector.tsx";
 
 function valueText(value: number) {
   return `$${value.toLocaleString('en-US')}`;

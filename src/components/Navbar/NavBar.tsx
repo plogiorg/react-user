@@ -1,9 +1,8 @@
-import * as React from 'react';
 import { Box, IconButton } from '@mui/joy';
 import Typography from '@mui/joy/Typography';
 import Avatar from '@mui/joy/Avatar';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
-import ColorSchemeToggle from './ColorSchemeToggle';
+import ColorSchemeToggle from "../ThemeToggler/ColorSchemeToggle.tsx";
 
 export default function HeaderSection() {
   return (
