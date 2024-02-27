@@ -17,7 +17,12 @@ function valueText(value: number) {
   return `$${value.toLocaleString('en-US')}`;
 }
 
-export default function Filters() {
+type FiltersProps = {
+  onCountryChange: (value: any) => void;
+  onRangeChange: (value: number[]) => void;
+}
+
+const Filters: React.FC<FiltersProps> = ({ onCountryChange, onRangeChange }) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Stack
@@ -41,7 +46,7 @@ export default function Filters() {
         <Stack useFlexGap spacing={3} sx={{ p: 2 }}>
           <DialogTitle>Filters</DialogTitle>
           <ModalClose />
-          <CountrySelector />
+          <CountrySelector onChange={onCountryChange}/>
           <Box
             sx={{
               display: 'grid',
@@ -75,13 +80,14 @@ export default function Filters() {
               step={100}
               min={0}
               max={10000}
+              onChange={(_, value) => onRangeChange(Array.isArray(value) ? value : [value, 0])}
               getAriaValueText={valueText}
               valueLabelDisplay="auto"
               valueLabelFormat={valueText}
               marks={[
-                { value: 0, label: '$0' },
-                { value: 5000, label: '$5,000' },
-                { value: 10000, label: '$10,000' },
+                { value: 0, label: '0Pi' },
+                { value: 5000, label: '5,000Pi' },
+                { value: 10000, label: '10,000Pi' },
               ]}
               sx={{
                 [`& .${sliderClasses.markLabel}[data-index="0"]`]: {
@@ -98,3 +104,4 @@ export default function Filters() {
     </Stack>
   );
 }
+export default Filters

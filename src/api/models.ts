@@ -14,3 +14,30 @@ export type UserModel = WithId<{
   lastName: string;
   email: string;
 }>;
+
+export type Service = WithId<{
+  id: number,
+  createdAt: Date,
+  updatedAt: Date,
+  userId: string,
+  description: string,
+  price: number,
+  isDeleted: boolean,
+  serviceTypeId: number,
+  lan: number,
+  lat:number,
+  city: string,
+  address: string
+}>;
+
+export type ServiceResponse = {
+  services : Service[]
+}
+
+export type  GetServiceParams = {
+  city?: string;
+  search?: string;
+  sortBy?:string;
+  priceFrom?: number;
+  priceTo?: number;
+}

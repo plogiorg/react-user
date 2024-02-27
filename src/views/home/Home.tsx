@@ -3,145 +3,83 @@ import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Stack from '@mui/joy/Stack';
 import { Filters, Header, Navbar, Search, Pagination, ItemCard } from "../../components";
-import mapboxgl, { GeoJSONSourceRaw } from "mapbox-gl";
-import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
+import Map, { GeolocateControl, Marker } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Config from "../../config";
-
-interface MovingObject {
-  id: number;
-  name: string;
-  coordinates: number[];
-}
+import { GetServiceParams, Service, useServicesList } from "../../api";
+import { CircularProgress } from "@mui/joy";
+import { CountryType } from "../../components/CountrySelector/CountrySelector.tsx";
 
 export default function Home() {
-  const mapContainer = useRef<HTMLDivElement>(null);
-
-  const movingObjects: MovingObject[] = [
-  ];
-
-
-  useEffect(() => {
-    mapboxgl.accessToken = Config.MAPBOX_KEY;
-
-    if (mapContainer.current) {
-      const map = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/dark-v11",
-        center: [46.727646726986976, 24.664025291997973],
-        zoom: 8,
-        maxZoom: 15,
-      });
-      map.addControl(new mapboxgl.NavigationControl(), "top-left");
-
-      // Add your custom markers and lines here
-      movingObjects.forEach((object) => {
-        // Add object point source and layer
-        map.addSource(`object-source-${object.id}`, {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [],
-          },
-        });
-
-        map.addLayer({
-          id: `object-layer-${object.id}`,
-          type: "symbol",
-          source: `object-source-${object.id}`,
-          layout: {
-            "icon-image": "custom-marker",
-            "icon-size": 0.09,
-            "icon-allow-overlap": true,
-          },
-        });
-
-        // Add object line source and layer
-        map.addSource(`object-line-source-${object.id}`, {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [],
-          },
-        });
-
-        map.addLayer({
-          id: `object-line-layer-${object.id}`,
-          type: "line",
-          source: `object-line-source-${object.id}`,
-          paint: {
-            "line-color": "#00ff00", // Change line color to green
-            "line-width": 2,
-          },
-        });
-
-        // Initialize object path
-        object.path = [
-          {
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: object.coordinates,
-            },
-            properties: {
-              name: object.name,
-            },
-          },
-        ];
-      });
-
-      setInterval(() => {
-        movingObjects.forEach((object) => {
-          object.coordinates = [
-            object.coordinates[0] + 0.01 * Math.random(),
-            object.coordinates[1] + 0.01 * Math.random(),
-          ];
-
-          const source = map.getSource(`object-source-${object.id}`);
-
-          if (source && source.type === "geojson") {
-            const newFeature = {
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: object.coordinates,
-              },
-              properties: {
-                name: object.name,
-              },
-            };
-
-            source.setData({
-              type: "FeatureCollection",
-              features: [newFeature],
-            });
-
-            const lineSource = map.getSource(`object-line-source-${object.id}`);
-            if (lineSource && lineSource.type === "geojson") {
-              // Update object path
-              object.path.push(newFeature);
-
-              const lineStringFeature = {
-                type: "Feature",
-                geometry: {
-                  type: "LineString",
-                  coordinates: object.path.map((f) => f.geometry.coordinates),
-                },
-                properties: {},
-              };
-
-              lineSource.setData({
-                type: "FeatureCollection",
-                features: object.path.length > 1 ? [lineStringFeature] : [],
-              });
-            }
-          }
-        });
-      }, 20000); // Update every 20 seconds
-
-      // Clean up on unmount
-      return () => map.remove();
+  const [params, setParams] = useState<GetServiceParams>({});
+  const {isLoading, data:services, refetch} = useServicesList(params)
+  const mapRef = useRef(null);
+  const geoControlRef = useCallback((ref:mapboxgl.GeolocateControl) => {
+    if (ref) {
+      (async () => {
+        while (!mapRef.current) await ((() => new Promise((resolve) => setTimeout(resolve, 200)))())
+        ref.trigger();
+      })()
     }
   }, []);
+
+
+  const renderItems = () =>{
+    if(isLoading)
+      return <CircularProgress variant="soft" />
+
+
+    return services?.services.map((service) => (
+      <ItemCard
+        key={service.id}
+        price={service.price}
+        title={service.description}
+        category={service.id}
+        image={"https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"} // Use service.image instead of hard-coded value
+      />
+    ));
+
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [params.search, params.city, params.priceTo])
+
+  const handleSearch = (searchTerm: string) => {
+    setParams(prevState => ({
+      ...prevState,
+      search: searchTerm
+    }));
+  }
+
+  const handleCityChange = (city:CountryType) => {
+    if(city){
+      return setParams(prevState => ({
+        ...prevState,
+        city: city.label
+      }));
+    }
+
+    setParams(prevState => ({
+      ...prevState,
+      city: ""
+    }));
+  }
+
+  const handleRangeChange = (value:number[]) => {
+    setParams(prevState => ({
+      ...prevState,
+      priceFrom: value[0],
+      priceTo: value[1],
+    }));
+  }
+
+   const popup = ((service:Service) => {
+    return new mapboxgl.Popup().setText(service.description);
+  })
+
 
   return (
     <CssVarsProvider disableTransitionOnChange>
@@ -166,7 +104,7 @@ export default function Home() {
           }}
         >
           <Header />
-          <Search />
+          <Search onSearch={handleSearch} />
         </Stack>
         {<Box
           sx={{
@@ -174,51 +112,38 @@ export default function Home() {
             display: { xs: "none", md: "flex" },
           }}
         >
-          <div
-            ref={mapContainer}
-            style={{ position: "absolute", top: 0, bottom: 0, width: "100%" }}
-          />
+          <Map
+            mapboxAccessToken={Config.MAPBOX_KEY}
+            ref={mapRef}
+            initialViewState={{
+              longitude: -100,
+              latitude: 40,
+              zoom: 3.5,
+            }}
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+          >
+            <GeolocateControl
+              positionOptions={{ enableHighAccuracy: true }}
+              trackUserLocation={true}
+              showUserLocation={true}
+              ref={geoControlRef}
+            />
+
+            {services && services.services.map((service) => (
+              <Marker
+                key={service.id}
+                longitude={service.lan}
+                latitude={service.lat}
+                popup={popup(service)}
+              >
+              </Marker>
+            ))}
+          </Map>
         </Box>}
         <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
-          <Filters />
+          <Filters onCountryChange={handleCityChange} onRangeChange={handleRangeChange} />
           <Stack spacing={2} sx={{ overflow: 'auto' }}>
-            <ItemCard
-              title="A Cool and fastest way to deliver your prodducts"
-              category="Entire fleet to deliver in Riyadh"
-              rareFind
-              image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
-            />
-            <ItemCard
-              title="Warehouse Rentals"
-              category="Entire warehoses rental in business district"
-              liked
-              image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
-            />
-            <ItemCard
-              title="5 minute delivery guranteed"
-              category="Entire delivery unit in Carlton"
-              image="https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"
-            />
-            <ItemCard
-              title="Magnificent ways to dispatch you're workflow"
-              category="Entire fleet to dispatch at your hand"
-              image="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400"
-            />
-            <ItemCard
-              title="One click delivery"
-              category="Entire fleet to dispatch at your hand"
-              image="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=400"
-            />
-            <ItemCard
-              title="Endless new cars to rent"
-              category="An Amazing Cars To Rent"
-              image="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400"
-            />
-            <ItemCard
-              title="Single Delivery Hero as an army"
-              category="Delivery Hero that can reach your loaction in a bit"
-              image="https://images.unsplash.com/photo-1481437156560-3205f6a55735?auto=format&fit=crop&w=400"
-            />
+            {renderItems()}
           </Stack>
         </Stack>
         <Pagination />

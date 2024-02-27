@@ -6,7 +6,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Typography from '@mui/joy/Typography';
 
-export default function CountrySelector(props: FormControlProps) {
+export default function CountrySelector(props: FormControlProps & {onChange?:any}) {
   const { sx, ...other } = props;
   return (
     <FormControl
@@ -17,6 +17,7 @@ export default function CountrySelector(props: FormControlProps) {
       <Autocomplete
         size="sm"
         autoHighlight
+        onChange={(_, value) => props.onChange(value)}
         isOptionEqualToValue={(option, value) => option.code === value.code}
         defaultValue={{ code: 'TH', label: 'Thailand', phone: '66' }}
         options={countries}
@@ -49,7 +50,7 @@ export default function CountrySelector(props: FormControlProps) {
   );
 }
 
-interface CountryType {
+export interface CountryType {
   code: string;
   label: string;
   phone: string;

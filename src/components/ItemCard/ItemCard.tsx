@@ -21,6 +21,7 @@ type ItemCardProps = {
   liked?: boolean;
   rareFind?: boolean;
   title: React.ReactNode;
+  price:number
 };
 
 export default function ItemCard(props: ItemCardProps) {
@@ -158,7 +159,7 @@ export default function ItemCard(props: ItemCardProps) {
             4.0
           </Typography>
           <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: 'right' }}>
-            <strong>540Pi</strong> <Typography level="body-md">total</Typography>
+            <strong>{props.price.toLocaleString() + "Pi"}</strong> <Typography level="body-md">total</Typography>
           </Typography>
         </Stack>
       </CardContent>
