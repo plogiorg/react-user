@@ -109,7 +109,9 @@ export default function Home() {
         {<Box
           sx={{
             gridRow: "span 3",
-            display: { xs: "none", md: "flex" },
+            display: { md: "flex" },
+            height: { xs: "25vh", md:"auto" }
+
           }}
         >
           <Map
