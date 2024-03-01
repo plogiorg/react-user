@@ -54,10 +54,6 @@ export default function ItemCard(props: ItemCardProps) {
         <AspectRatio
           ratio="1"
           flex
-          sx={{
-            minWidth: { sm: 120, md: 160 },
-            '--AspectRatio-maxHeight': { xs: '160px', sm: '9999px' },
-          }}
         >
           <img alt="" src={image} />
           <Stack

@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { LoginRequest } from ".";
+import { LoginRequest, SignupRequest } from ".";
 import { fetchUtil } from "../utils/fetch.util";
 
 export const useLogin = () => {
@@ -19,6 +19,18 @@ export const useLogout = () => {
     onMutate: () => {
       return fetchUtil({
         url: "/v1/auth/logout",
+        method: "POST",
+      });
+    },
+  });
+};
+
+export const useSignup = () => {
+  return useMutation({
+    mutationFn: (data: SignupRequest) => {
+      return fetchUtil({
+        url: "/v1/auth/user/signup",
+        body: data,
         method: "POST",
       });
     },

@@ -40,4 +40,31 @@ export type  GetServiceParams = {
   sortBy?:string;
   priceFrom?: number;
   priceTo?: number;
+  typeId?: number | undefined;
 }
+
+
+export type ServiceType = WithId<{
+  id: number,
+  title: string;
+  description: string;
+  image: string;
+  createdAt: Date,
+  updatedAt: Date,
+  isActive: true
+}>;
+
+
+
+export type ServiceTypeReponse = {
+  types : ServiceType[]
+}
+
+export type SignupRequest = {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string
+  country: string;
+};

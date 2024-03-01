@@ -11,6 +11,23 @@ import Rating from "./Rating/Rating"
 import Search from "./Search/Search"
 import ThemeToggler from "./ThemeToggler/ColorSchemeToggle"
 import ToggleGroup from "./ToggleGroup/ToggleGroup"
+import TwoSidedLayout from "./TwoSidedLayout/TwoSidedLayout"
+import SelectCard from "./SelectCard/SelectCard"
 
 
-export { Button, Input, CountrySelector, OrderSelector, Search, Navbar, Header, Rating, Filters, ItemCard, Pagination, ThemeToggler, ToggleGroup };
+export {
+  Button,
+  Input,
+  CountrySelector,
+  OrderSelector,
+  Search,
+  Navbar,
+  Header,
+  Rating,
+  Filters,
+  ItemCard,
+  Pagination,
+  ThemeToggler,
+  ToggleGroup,
+  SelectCard,
+  TwoSidedLayout };

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./views/home";
-import { Login } from "./views/login";
+import { Login, Signup } from "./views/auth";
 
 type Route = {
   name: string;
@@ -12,8 +12,13 @@ type Route = {
 const ROUTES: Array<Route> = [
   {
     name: "Login",
-    path: "/login",
+    path: "/auth",
     component: <Login />,
+  },
+  {
+    name: "Signup",
+    path: "/auth/register",
+    component: <Signup />,
   },
   {
     name: "Home",

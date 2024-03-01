@@ -2,80 +2,82 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Stack from '@mui/joy/Stack';
-import { Filters, Header, Navbar, Search, Pagination, ItemCard } from "../../components";
+import { Header, Navbar, TwoSidedLayout, ItemCard, SelectCard } from "../../components";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useState } from "react";
-import { GetServiceParams, useServicesList } from "../../api";
-import { CircularProgress } from "@mui/joy";
-import { CountryType } from "../../components/CountrySelector/CountrySelector.tsx";
+import  { useEffect, useState } from "react";
+import { GetServiceParams, ServiceType, useServicesList, useServiceTypes } from "../../api";
+import { CircularProgress, Grid, ToggleButtonGroup } from "@mui/joy";
+import Typography from "@mui/joy/Typography";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
+import { ArrowForward } from "@mui/icons-material";
+import Star from "@mui/icons-material/Star";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [params, setParams] = useState<GetServiceParams>({});
   const {isLoading, data:services, refetch} = useServicesList(params)
-  // const mapRef = useRef(null);
-  // const geoControlRef = useCallback((ref:mapboxgl.GeolocateControl) => {
-  //   if (ref) {
-  //     (async () => {
-  //       while (!mapRef.current) await ((() => new Promise((resolve) => setTimeout(resolve, 200)))())
-  //       ref.trigger();
-  //     })()
-  //   }
-  // }, []);
+  const {isLoading: isTypesLoading, data:serviceTypes} = useServiceTypes()
+  const [selectedType, setSelectedType] = useState<ServiceType | undefined>()
+  const [signupType, setSignupType] = useState<string | null>("user")
+  const navigate = useNavigate()
 
+ const handleTypeSelect = (type:ServiceType) => {
+    setSelectedType(type)
+   if(selectedType?.id == type.id){
+     return setParams(prevState => ({
+       ...prevState,
+       typeId: undefined
+     }));
+   }
+   return setParams(prevState => ({
+     ...prevState,
+     typeId: type.id
+   }));
 
+  }
+
+  const handleUserSignupNavigate = ()=>{
+    if(signupType == "provider"){
+      window.location.href = "https://provider.plogi.app/signup"
+    }else {
+      navigate("/auth/register/")
+      console.log("user signup");
+    }
+
+  }
+  const renderTypes = () => {
+    if(isTypesLoading){
+      return <CircularProgress variant="soft" />
+    }
+
+    return serviceTypes?.types.map((type) =>(
+      <SelectCard selected={type.id == selectedType?.id} title={type.title} onClick={() => handleTypeSelect(type)} description={type.description}/>
+    ))
+  }
   const renderItems = () =>{
     if(isLoading)
       return <CircularProgress variant="soft" />
 
 
-    return services?.services.map((service) => (
-      <ItemCard
-        key={service.id}
-        price={service.price}
-        title={service.description}
-        category={service.id}
-        image={"https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"} // Use service.image instead of hard-coded value
-      />
+    return services?.services.map((service, index) => (
+      <Grid xs={2} sm={4} md={4} key={index}>
+        <ItemCard
+          key={service.id}
+          price={service.price}
+          title={service.description}
+          category={service.id}
+          image={"https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"} // Use service.image instead of hard-coded value
+        />
+      </Grid>
+
     ));
 
   }
 
   useEffect(() => {
     refetch()
-  }, [params.search, params.city, params.priceTo])
-
-  const handleSearch = (searchTerm: string) => {
-    setParams(prevState => ({
-      ...prevState,
-      search: searchTerm
-    }));
-  }
-
-  const handleCityChange = (city:CountryType) => {
-    if(city){
-      return setParams(prevState => ({
-        ...prevState,
-        city: city.label
-      }));
-    }
-
-    setParams(prevState => ({
-      ...prevState,
-      city: ""
-    }));
-  }
-
-  const handleRangeChange = (value:number[]) => {
-    setParams(prevState => ({
-      ...prevState,
-      priceFrom: value[0],
-      priceTo: value[1],
-    }));
-  }
-
-  //  const popup = ((service:Service) => {
-  //   return new mapboxgl.Popup().setText(service.description);
-  // })
+  }, [params.search, params.city, params.priceTo, params.typeId])
 
 
   return (
@@ -85,10 +87,7 @@ export default function Home() {
       <Box
         component="main"
         sx={{
-          height: 'calc(100vh - 55px)', // 55px is the height of the NavBar
-          display: 'grid',
-          gridTemplateColumns: { xs: 'auto', md: '60% 40%' },
-          gridTemplateRows: 'auto 1fr auto',
+
         }}
       >
         <Stack
@@ -101,51 +100,131 @@ export default function Home() {
           }}
         >
           <Header />
-          <Search onSearch={handleSearch} />
-        </Stack>
-        {/*{<Box*/}
-        {/*  sx={{*/}
-        {/*    gridRow: "span 3",*/}
-        {/*    display: { md: "flex" },*/}
-        {/*    height: { xs: "25vh", md:"auto" }*/}
+          {/*<Search onSearch={handleSearch} />*/}
 
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <Map*/}
-        {/*    mapboxAccessToken={Config.MAPBOX_KEY}*/}
-        {/*    ref={mapRef}*/}
-        {/*    initialViewState={{*/}
-        {/*      longitude: -100,*/}
-        {/*      latitude: 40,*/}
-        {/*      zoom: 3.5,*/}
-        {/*    }}*/}
-        {/*    mapStyle="mapbox://styles/mapbox/streets-v11"*/}
-        {/*  >*/}
-        {/*    <GeolocateControl*/}
-        {/*      positionOptions={{ enableHighAccuracy: true }}*/}
-        {/*      trackUserLocation={true}*/}
-        {/*      showUserLocation={true}*/}
-        {/*      ref={geoControlRef}*/}
-        {/*    />*/}
+          <div>
+            <TwoSidedLayout>
+              <Typography color="primary" fontSize="lg" fontWeight="lg">
+                The power to do more
+              </Typography>
+              <Typography
+                level="h1"
+                fontWeight="xl"
+                fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
+              >
+                A large headlinerer about our product features & services
+              </Typography>
+              <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
+                A descriptive secondary text placeholder. Use it to explain your business
+                offer better.
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 2,
+                  my: 2,
+                  flexWrap: 'wrap',
+                  '& > *': { flex: 'auto' },
+                }}
+              >
+                <ToggleButtonGroup
+                  value={signupType}
+                  onChange={(_, newValue) => {
+                    setSignupType(newValue);
+                  }}
+                  sx={{ justifyContent: "center"}}
+                >
+                  <Button value="user">I'm User</Button>
+                  <Button value="provider">I Have Service</Button>
+                </ToggleButtonGroup>
+                <Input size="lg" placeholder="Sign in with email" />
+                <Button size="lg" onClick={handleUserSignupNavigate} endDecorator={<ArrowForward fontSize="large" />}>
+                  Get Started
+                </Button>
+              </Box>
+              <Box
+                sx={(theme) => ({
+                  display: 'flex',
+                  textAlign: 'center',
+                  alignSelf: 'stretch',
+                  columnGap: 4.5,
+                  '& > *': {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    flex: 1,
+                  },
+                  [theme.breakpoints.up(834)]: {
+                    textAlign: 'left',
+                    '& > *': {
+                      flexDirection: 'row',
+                      gap: 1.5,
+                      justifyContent: 'initial',
+                      flexWrap: 'nowrap',
+                      flex: 'none',
+                    },
+                  },
+                })}
+              >
+                <div>
+                  <Typography
+                    fontSize="xl4"
+                    fontWeight="lg"
+                    endDecorator={<Star fontSize="large" sx={{ color: 'warning.300' }} />}
+                  >
+                    4.9
+                  </Typography>
+                  <Typography textColor="text.secondary">
+                    Over <b>5k</b> positive <br /> customer reviews.
+                  </Typography>
+                </div>
+                <div>
+                  <Typography fontSize="xl4" fontWeight="lg">
+                    2M
+                  </Typography>
+                  <Typography textColor="text.secondary">
+                    Global <br /> Transactions.
+                  </Typography>
+                </div>
+              </Box>
+            </TwoSidedLayout>
+          </div>
 
-        {/*    {services && services.services.map((service) => (*/}
-        {/*      <Marker*/}
-        {/*        key={service.id}*/}
-        {/*        longitude={service.lan}*/}
-        {/*        latitude={service.lat}*/}
-        {/*        popup={popup(service)}*/}
-        {/*      >*/}
-        {/*      </Marker>*/}
-        {/*    ))}*/}
-        {/*  </Map>*/}
-        {/*</Box>}*/}
-        <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
-          <Filters onCountryChange={handleCityChange} onRangeChange={handleRangeChange} />
-          <Stack spacing={2} sx={{ overflow: 'auto' }}>
-            {renderItems()}
+
+          <Stack spacing={2} sx={{ px: { xs: 2, md: 4 }, pt: 2, minHeight: 0 }}>
+            {/*<Filters onCountryChange={handleCityChange} onRangeChange={handleRangeChange} />*/}
+            <Typography
+              level="h3"
+              fontWeight="xl"
+              fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
+            >
+              Our Services
+            </Typography>
+            <Stack direction="row" overflow="scroll" spacing={1} justifyContent="center">
+              {renderTypes()}
+            </Stack>
+
+            <Typography
+              alignSelf={"self-end"}
+              level="h3"
+              fontWeight="xl"
+              fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
+            >
+              Our Offers
+            </Typography>
+            <Grid
+              overflow="scroll"
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              sx={{ flexGrow: 1 }}
+            >
+              {renderItems()}
+            </Grid>
           </Stack>
         </Stack>
-        <Pagination />
       </Box>
     </CssVarsProvider>
   );
