@@ -70,7 +70,7 @@ export default function Home() {
           price={service.price}
           title={service.description}
           category={service.id}
-          image={"https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"} // Use service.image instead of hard-coded value
+          image={"https://react-user-pi.s3.us-west-1.amazonaws.com/WhatsApp+Image+2024-03-02+at+17.49.29.jpeg"} // Use service.image instead of hard-coded value
         />
       </Grid>
 
