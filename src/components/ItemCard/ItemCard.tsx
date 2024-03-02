@@ -55,7 +55,7 @@ export default function ItemCard(props: ItemCardProps) {
           ratio="1"
           flex
         >
-          <img alt="" src={image} />
+          <img style={{padding:"3%"}} alt="" src={image} />
           <Stack
             alignItems="center"
             direction="row"
@@ -138,7 +138,7 @@ export default function ItemCard(props: ItemCardProps) {
             Wi-Fi
           </Typography>
         </Stack>
-        <Stack direction="row" sx={{ mt: 'auto' }}>
+        <Stack direction="column" sx={{ mt: 'auto' }}>
           <Typography
             level="title-sm"
             startDecorator={
@@ -152,10 +152,9 @@ export default function ItemCard(props: ItemCardProps) {
             }
             sx={{ display: 'flex', gap: 1 }}
           >
-            4.0
           </Typography>
           <Typography level="title-lg" sx={{ flexGrow: 1, textAlign: 'right' }}>
-            <strong>{props.price.toLocaleString() + "Pi"}</strong> <Typography level="body-md">total</Typography>
+            <strong>{props.price.toLocaleString() + "Pi"}</strong>
           </Typography>
         </Stack>
       </CardContent>

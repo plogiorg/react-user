@@ -51,14 +51,17 @@ export default function Home() {
       return <CircularProgress variant="soft" />
     }
 
-    return serviceTypes?.types.map((type) =>(
-      <SelectCard selected={type.id == selectedType?.id} title={type.title} onClick={() => handleTypeSelect(type)} description={type.description}/>
-    ))
+    return <Grid container direction="row" display="flex" spacing={2} sx={{ flexGrow: 1 }}>
+      <Grid direction="row" display={"flex"} gap={2} xs={8}>
+        {serviceTypes?.types.map((type) =>(
+          <SelectCard selected={type.id == selectedType?.id} title={type.title} onClick={() => handleTypeSelect(type)} description={type.description}/>
+        ))}
+      </Grid>
+    </Grid>
   }
   const renderItems = () =>{
     if(isLoading)
       return <CircularProgress variant="soft" />
-
 
     return services?.services.map((service, index) => (
       <Grid xs={2} sm={4} md={4} key={index}>
