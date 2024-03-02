@@ -69,7 +69,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
 
 export default function Signup() {
   const { mutateAsync: signup, isLoading } = useSignup();
-  const [country, setCountry] = useState({ code: '', label: '', phone: '' });
+  const [country, setCountry] = useState({ code: 'SA', label: 'Saudi Arabia', phone: '996' });
   const navigate = useNavigate()
   const onSignupError = (error: NonNullable<unknown>) => {
     console.log(error);
