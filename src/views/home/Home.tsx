@@ -12,16 +12,18 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import { ArrowForward } from "@mui/icons-material";
 import Star from "@mui/icons-material/Star";
+import Phone from "@mui/icons-material/Phone";
+import WhatsApp from "@mui/icons-material/WhatsApp";
 import { useNavigate } from "react-router-dom";
 import ModalClose from "@mui/joy/ModalClose";
+import Link from "@mui/joy/Link";
 
 export default function Home() {
   const [params, setParams] = useState<GetServiceParams>({});
   const {isLoading, data:services, refetch} = useServicesList(params)
   const [selectedType, setSelectedType] = useState<ServiceType | undefined>()
-  const [selectedService, setSelectedService] = useState<Service | undefined>()
   const {isLoading: isTypesLoading, data:serviceTypes} = useServiceTypes()
-  const {isLoading: isDetailLoading, data:serviceDetail, refetch:getService} = useGetService(selectedService?.id || undefined)
+  const {isLoading: isDetailLoading, data:serviceDetail, mutateAsync:getService} = useGetService()
   const [signupType, setSignupType] = useState<string | null>("user")
   const [modalOpen, setModalOpen] = useState(false)
   const navigate = useNavigate()
@@ -43,9 +45,9 @@ export default function Home() {
   }
 
   const handleServiceSelect = async (service: Service) => {
-    setSelectedService(service)
-    await getService()
-    setModalOpen(false )
+    // setSelectedService(service)
+    setModalOpen(true )
+    await getService(service.id)
   }
 
   const handleUserSignupNavigate = ()=>{
@@ -90,9 +92,22 @@ export default function Home() {
 
   }
 
+  const renderServiceDetails = ()=> {
+    if (isDetailLoading || !serviceDetail) return <CircularProgress />;
+    return <Stack direction={"column"} spacing={1}>
+      <Typography level={"h3"}>Service By: {`${serviceDetail?.service.userInfo.firstName} ${serviceDetail?.service.userInfo.lastName}`}</Typography>
+      <Typography>{serviceDetail?.service ? serviceDetail.service.description : ""}</Typography>
+      <Typography>{serviceDetail?.service ? serviceDetail.service.address : ""}</Typography>
+      <Link endDecorator={<Phone />}
+            href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}>{serviceDetail?.service.userInfo?.attributes?.phone[0]}</Link>
+      <Link endDecorator={<WhatsApp />}
+            href={`https://api.whatsapp.com/send?phone=${serviceDetail?.service.userInfo?.attributes?.phone[0] || ""}`}>WhatsApp</Link>
+    </Stack>;
+  }
+
   useEffect(() => {
-    refetch()
-  }, [params.search, params.city, params.priceTo, params.typeId])
+    refetch();
+  }, [params.search, params.city, params.priceTo, params.typeId]);
 
 
   return (
@@ -101,17 +116,15 @@ export default function Home() {
       <Navbar />
       <Box
         component="main"
-        sx={{
-
-        }}
+        sx={{}}
       >
         <Stack
           sx={{
-            backgroundColor: 'background.surface',
+            backgroundColor: "background.surface",
             px: { xs: 2, md: 4 },
             py: 2,
-            borderBottom: '1px solid',
-            borderColor: 'divider',
+            borderBottom: "1px solid",
+            borderColor: "divider",
           }}
         >
           <Header />
@@ -259,11 +272,10 @@ export default function Home() {
         </Typography>
       </Box>
 
-      <Modal open={modalOpen}>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <ModalDialog>
           <ModalClose />
-          {isDetailLoading ? <CircularProgress/> : <Typography>{serviceDetail?.service ? serviceDetail.service.description : ""}</Typography>
-          }
+          {renderServiceDetails()}
         </ModalDialog>
       </Modal>
     </CssVarsProvider>

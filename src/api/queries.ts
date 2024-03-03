@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { fetchUtil } from "../utils/fetch.util";
-import { GetServiceParams, ServiceResponse, ServiceTypeReponse, SingleServiceResponse } from "./models.ts";
+import { GetServiceParams, ServiceResponse, ServiceTypeReponse } from "./models.ts";
 
 const QUERY_KEYS = {
   GET_CURRENT_USER: ["user"],
@@ -34,20 +34,6 @@ export const useServicesList = (params?: GetServiceParams) => {
 
       return fetchUtil({
         url: `/v1/service${queryString}`,
-        method: "GET",
-        token: false,
-      });
-    },
-  });
-};
-
-export const useGetService = (id?:number) => {
-  return useQuery<SingleServiceResponse>({
-    queryKey: QUERY_KEYS.GET_SERVICE,
-    enabled: false,
-    queryFn: () => {
-      return fetchUtil({
-        url: `/v1/service/${id}`,
         method: "GET",
         token: false,
       });

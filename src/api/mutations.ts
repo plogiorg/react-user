@@ -25,6 +25,17 @@ export const useLogout = () => {
   });
 };
 
+export const useGetService = () => {
+  return useMutation({
+    mutationFn: (id:number) => {
+      return fetchUtil({
+        url: `/v1/service/${id}`,
+        method: "GET",
+        token: true
+      });
+    },
+  });
+};
 export const useSignup = () => {
   return useMutation({
     mutationFn: (data: SignupRequest) => {
