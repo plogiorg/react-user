@@ -5,22 +5,27 @@ import Stack from '@mui/joy/Stack';
 import { Header, Navbar, TwoSidedLayout, ItemCard, SelectCard } from "../../components";
 import "mapbox-gl/dist/mapbox-gl.css";
 import  { useEffect, useState } from "react";
-import { GetServiceParams, ServiceType, useServicesList, useServiceTypes } from "../../api";
-import { CircularProgress, Grid, ToggleButtonGroup } from "@mui/joy";
+import { GetServiceParams, Service, ServiceType, useGetService, useServicesList, useServiceTypes } from "../../api";
+import { CircularProgress, Grid, Modal, ModalDialog, ToggleButtonGroup } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import { ArrowForward } from "@mui/icons-material";
 import Star from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
+import ModalClose from "@mui/joy/ModalClose";
 
 export default function Home() {
   const [params, setParams] = useState<GetServiceParams>({});
   const {isLoading, data:services, refetch} = useServicesList(params)
-  const {isLoading: isTypesLoading, data:serviceTypes} = useServiceTypes()
   const [selectedType, setSelectedType] = useState<ServiceType | undefined>()
+  const [selectedService, setSelectedService] = useState<Service | undefined>()
+  const {isLoading: isTypesLoading, data:serviceTypes} = useServiceTypes()
+  const {isLoading: isDetailLoading, data:serviceDetail, refetch:getService} = useGetService(selectedService?.id || undefined)
   const [signupType, setSignupType] = useState<string | null>("user")
+  const [modalOpen, setModalOpen] = useState(false)
   const navigate = useNavigate()
+
 
  const handleTypeSelect = (type:ServiceType) => {
     setSelectedType(type)
@@ -35,6 +40,12 @@ export default function Home() {
      typeId: type.id
    }));
 
+  }
+
+  const handleServiceSelect = async (service: Service) => {
+    setSelectedService(service)
+    await getService()
+    setModalOpen(false )
   }
 
   const handleUserSignupNavigate = ()=>{
@@ -66,6 +77,7 @@ export default function Home() {
     return services?.services.map((service, index) => (
       <Grid xs={2} sm={4} md={4} key={index}>
         <ItemCard
+          onClick={() => handleServiceSelect(service)}
           key={service.id}
           price={service.price}
           title={service.description}
@@ -229,6 +241,31 @@ export default function Home() {
           </Stack>
         </Stack>
       </Box>
+      <Box
+        sx={{
+          backgroundColor: 'background.surface',
+          px: { xs: 2, md: 4 },
+          py: 2,
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          textAlign: 'center',
+        }}
+      >
+        <Typography  textColor="text.secondary">
+          &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+        </Typography>
+        <Typography  textColor="primary">
+          <a href="/tos">Terms and Conditions</a>
+        </Typography>
+      </Box>
+
+      <Modal open={modalOpen}>
+        <ModalDialog>
+          <ModalClose />
+          {isDetailLoading ? <CircularProgress/> : <Typography>{serviceDetail?.service ? serviceDetail.service.description : ""}</Typography>
+          }
+        </ModalDialog>
+      </Modal>
     </CssVarsProvider>
   );
 }

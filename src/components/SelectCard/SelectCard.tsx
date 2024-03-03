@@ -42,7 +42,6 @@ function InteractiveCard(props: InteractiveCardProps) {
            <Link
              overlay
              underline="none"
-             href="#interactive-card"
              sx={{ color: 'text.tertiary' }}
            >
              {props.title}

@@ -23,6 +23,7 @@ export type Service = WithId<{
   description: string,
   price: number,
   isDeleted: boolean,
+  userInfo?:any,
   serviceTypeId: number,
   lan: number,
   lat:number,
@@ -32,6 +33,10 @@ export type Service = WithId<{
 
 export type ServiceResponse = {
   services : Service[]
+}
+
+export type SingleServiceResponse = {
+  service : Service
 }
 
 export type  GetServiceParams = {

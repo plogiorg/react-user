@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./views/home";
 import { Login, Signup } from "./views/auth";
+import TermsAndConditions from "./views/home/TermsAndConditions.tsx";
 
 type Route = {
   name: string;
@@ -24,6 +25,11 @@ const ROUTES: Array<Route> = [
     name: "Home",
     path: "/",
     component: <Home />,
+  },
+  {
+    name: "Terms and Condition",
+    path: "/tos",
+    component: <TermsAndConditions />,
   },
 ];
 
