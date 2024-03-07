@@ -21,10 +21,11 @@ function InteractiveCard(props: InteractiveCardProps) {
   return (
    <div onClick={props.onClick}>
      <Card
+
        variant="outlined"
        orientation="horizontal"
        sx={{
-         width: 320,
+         width: {xs: "auto", lg:320},
          '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder'},
          borderColor: props.selected ? "indigo" : "neutral.outlinedHoverBorder"
        }}
