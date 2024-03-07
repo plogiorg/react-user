@@ -14,7 +14,7 @@ import Typography from "@mui/joy/Typography";
 import Stack from "@mui/joy/Stack";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
+import logo from '../../assets/logo.png';
 import { useSignup } from "../../api";
 import { LOCALSTORAGE_KEYS } from "../../constants";
 import { useNavigate } from "react-router-dom";
@@ -133,9 +133,9 @@ export default function Signup() {
           >
             <Box sx={{ gap: 2, display: "flex", alignItems: "center" }}>
               <IconButton variant="soft" color="primary" size="sm">
-                <BadgeRoundedIcon />
+                <img src={logo} alt={logo} style={{ width: "5vh" }} />
               </IconButton>
-              <Typography level="title-lg">Company logo</Typography>
+              <Typography level="title-lg">PLogi</Typography>
             </Box>
             <ColorSchemeToggle />
           </Box>
@@ -287,7 +287,7 @@ export default function Signup() {
           </Box>
           <Box component="footer" sx={{ py: 3 }}>
             <Typography level="body-xs" textAlign="center">
-              © Your company {new Date().getFullYear()}
+              © PLogi {new Date().getFullYear()}
             </Typography>
           </Box>
         </Box>

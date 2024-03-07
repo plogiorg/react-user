@@ -7,7 +7,6 @@ export default function HeaderSection() {
       <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
         <Typography level="h2">Pi Logistics Services</Typography>
       </Stack>
-      
     </Stack>
   );
 }

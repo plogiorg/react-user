@@ -1,7 +1,7 @@
 import { Box, IconButton } from '@mui/joy';
 import Typography from '@mui/joy/Typography';
 import Avatar from '@mui/joy/Avatar';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import logo from '../../assets/logo.png';
 import ColorSchemeToggle from "../ThemeToggler/ColorSchemeToggle.tsx";
 
 export default function HeaderSection() {
@@ -32,7 +32,7 @@ export default function HeaderSection() {
         }}
       >
         <IconButton size="sm" variant="soft">
-          <LocalShippingIcon />
+          <img src={logo} alt={logo} style={{width: "5vh"}} />
         </IconButton>
         <Typography component="h1" fontWeight="xl">
           Pi Logistics
@@ -54,7 +54,7 @@ export default function HeaderSection() {
           />
           <Box sx={{ minWidth: 0, flex: 1 }}>
             <Typography level="title-sm">Pi User</Typography>
-            <Typography level="body-xs">admin@pilogi.app</Typography>
+            <Typography level="body-xs">admin@plogi.app</Typography>
           </Box>
         </Box>
         <ColorSchemeToggle sx={{ alignSelf: 'center' }} />

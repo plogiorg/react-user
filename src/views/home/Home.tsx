@@ -139,12 +139,10 @@ export default function Home() {
                 fontWeight="xl"
                 fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
               >
-                A large headlinerer about our product features & services
+                PI Network: Your Key to Premium Services
               </Typography>
               <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-                A descriptive secondary text placeholder. Use it to explain your business
-                offer better.
-              </Typography>
+                Our website serves the worldwide PI Network currency community with top-notch car rentals, goods transportation, delivery, and logistics services. Valuable services for a valuable currency.              </Typography>
               <Box
                 sx={{
                   display: 'flex',
@@ -264,7 +262,7 @@ export default function Home() {
         }}
       >
         <Typography  textColor="text.secondary">
-          &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+          &copy; {new Date().getFullYear()} PLogi. All rights reserved.
         </Typography>
         <Typography  textColor="primary">
           <a href="/tos">Terms and Conditions</a>
