@@ -17,7 +17,6 @@ import Star from '@mui/icons-material/Star';
 
 type ItemCardProps = {
   category: React.ReactNode;
-  image: string;
   liked?: boolean;
   rareFind?: boolean;
   title: React.ReactNode;
@@ -26,7 +25,7 @@ type ItemCardProps = {
 };
 
 export default function ItemCard(props: ItemCardProps) {
-  const { category, title, rareFind = false, liked = false, image } = props;
+  const { category, title, rareFind = false, liked = false } = props;
   const [isLiked, setIsLiked] = React.useState(liked);
   return (
    <div onClick={props.onClick}>
@@ -57,7 +56,7 @@ export default function ItemCard(props: ItemCardProps) {
            ratio="1"
            flex
          >
-           <img style={{padding:"3%"}} alt="" src={image} />
+           {/*<img style={{padding:"3%"}} alt="" src={image} />*/}
            <Stack
              alignItems="center"
              direction="row"

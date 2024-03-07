@@ -16,7 +16,7 @@ type InteractiveCardProps = {
   onClick?: () => void
 };
 
-
+const fallback = "https://react-user-pi.s3.us-west-1.amazonaws.com/WhatsApp+Image+2024-03-02+at+17.49.29.jpeg"
 function InteractiveCard(props: InteractiveCardProps) {
   return (
    <div onClick={props.onClick}>
@@ -31,8 +31,8 @@ function InteractiveCard(props: InteractiveCardProps) {
      >
        <AspectRatio ratio="1" sx={{ width: 90 }}>
          <img
-           src="https://react-user-pi.s3.us-west-1.amazonaws.com/WhatsApp+Image+2024-03-02+at+17.49.29.jpeg"
-           srcSet="https://react-user-pi.s3.us-west-1.amazonaws.com/WhatsApp+Image+2024-03-02+at+17.49.29.jpeg"
+           src={props.image ?? fallback}
+           srcSet={props.image ?? fallback}
            loading="lazy"
            alt=""
          />
@@ -48,7 +48,7 @@ function InteractiveCard(props: InteractiveCardProps) {
            </Link>
          </Typography>
 
-         <Typography level="body-lg" justifyContent="center" aria-describedby="card-description" mb={1}>
+         <Typography level="body-sm" textOverflow="ellipsis" overflow="hidden" height={20} justifyContent="center" aria-describedby="card-description" mb={1}>
              {props.description}
          </Typography>
        </CardContent>

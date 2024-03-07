@@ -67,7 +67,7 @@ export default function Home() {
     return <Grid container direction="row" display="flex" spacing={2} sx={{ flexGrow: 1 }}>
       <Grid direction="row" display={"flex"} gap={2} xs={8}>
         {serviceTypes?.types.map((type) =>(
-          <SelectCard selected={type.id == selectedType?.id} title={type.title} onClick={() => handleTypeSelect(type)} description={type.description}/>
+          <SelectCard key={type.id} image={type.image} selected={type.id == selectedType?.id} title={type.title} onClick={() => handleTypeSelect(type)} description={type.description}/>
         ))}
       </Grid>
     </Grid>
@@ -84,7 +84,6 @@ export default function Home() {
           price={service.price}
           title={service.description}
           category={service.id}
-          image={"https://react-user-pi.s3.us-west-1.amazonaws.com/WhatsApp+Image+2024-03-02+at+17.49.29.jpeg"} // Use service.image instead of hard-coded value
         />
       </Grid>
 
