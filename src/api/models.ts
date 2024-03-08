@@ -25,6 +25,7 @@ export type Service = WithId<{
   isDeleted: boolean,
   userInfo?:any,
   serviceTypeId: number,
+  serviceType: ServiceType,
   lan: number,
   lat:number,
   city: string,

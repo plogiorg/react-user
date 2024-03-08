@@ -82,6 +82,7 @@ export default function Home() {
           onClick={() => handleServiceSelect(service)}
           key={service.id}
           price={service.price}
+          image={service?.serviceType?.image}
           title={service.description}
           category={service.id}
         />
