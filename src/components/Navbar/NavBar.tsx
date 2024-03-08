@@ -32,7 +32,7 @@ export default function HeaderSection() {
         }}
       >
         <IconButton size="sm" variant="soft">
-          <img src={logo} alt={logo} style={{width: "5vh"}} />
+          <img src={logo} alt={logo} style={{width: "8vh"}} />
         </IconButton>
         <Typography component="h1" fontWeight="xl">
           Pi Logistics
