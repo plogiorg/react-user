@@ -33,6 +33,7 @@ export default function Home() {
  const handleTypeSelect = (type:ServiceType) => {
     setSelectedType(type)
    if(selectedType?.id == type.id){
+     setSelectedType(undefined)
      return setParams(prevState => {
        const { typeId, ...rest } = prevState;
        return rest;
