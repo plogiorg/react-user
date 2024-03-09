@@ -19,6 +19,7 @@ import ModalClose from "@mui/joy/ModalClose";
 import AspectRatio from "@mui/joy/AspectRatio";
 import CardContent from "@mui/joy/CardContent";
 import Card from "@mui/joy/Card";
+import Link from "@mui/joy/Link";
 
 export default function Home() {
   const [params, setParams] = useState<GetServiceParams>({});
@@ -164,28 +165,30 @@ export default function Home() {
       </CardContent>
       <div>
         <Grid direction="column" gap={1} flexDirection="row" display="flex" spacing={3}>
-          <Button
-            variant="outlined"
-            endDecorator={<WhatsApp />}
-            size="sm"
-            color="success"
-            href={`https://api.whatsapp.com/send?phone=${serviceDetail?.service.userInfo?.attributes?.phone[0] || ""}`}
-            aria-label="Explore Service"
-            sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
-          >
-            WhatsApp
-          </Button>
-          <Button
-            variant="outlined"
-            endDecorator={<Phone />}
-            size="sm"
-            href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}
-            color="warning"
-            aria-label="Explore Service"
-            sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
-          >
-            Call
-          </Button>
+          <Link href={`https://api.whatsapp.com/send?phone=${serviceDetail?.service.userInfo?.attributes?.phone[0] || ""}`}>
+            <Button
+              variant="outlined"
+              endDecorator={<WhatsApp />}
+              size="sm"
+              color="success"
+              aria-label="Explore Service"
+              sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+            >
+              WhatsApp
+            </Button>
+          </Link>
+          <Link href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}>
+            <Button
+              variant="outlined"
+              endDecorator={<Phone />}
+              size="sm"
+              color="warning"
+              aria-label="Explore Service"
+              sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+            >
+              Call
+            </Button>
+          </Link>
           <Button
             variant="outlined"
             endDecorator={<Money />}
