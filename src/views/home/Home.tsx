@@ -132,12 +132,12 @@ export default function Home() {
 
     return <Card sx={{ width: 320 }}>
       <div>
-        <Typography level="title-lg">{selectedType?.title}</Typography>
-        <Typography level="body-sm">{serviceDetail?.service.createdAt.toLocaleString()}</Typography>
+        <Typography level="title-lg">{serviceDetail?.service.serviceType.title}</Typography>
+        <Typography level="body-sm">{new Date(serviceDetail?.service.createdAt).toLocaleDateString()}</Typography>
       </div>
       <AspectRatio minHeight="120px" maxHeight="200px">
         <img
-          src={selectedType?.image}
+          src={serviceDetail?.service.serviceType?.image}
           loading="lazy"
           alt=""
         />
