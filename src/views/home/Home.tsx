@@ -6,21 +6,22 @@ import { Header, Navbar, TwoSidedLayout, ItemCard, SelectCard } from "../../comp
 import "mapbox-gl/dist/mapbox-gl.css";
 import  { useEffect, useState } from "react";
 import { GetServiceParams, Service, ServiceType, useGetService, useServicesList, useServiceTypes } from "../../api";
-import { CircularProgress, Grid, Modal, ModalDialog, ToggleButtonGroup } from "@mui/joy";
+import { Alert, CircularProgress, Grid, Modal, ModalDialog, ToggleButtonGroup } from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import { ArrowForward } from "@mui/icons-material";
+import { ArrowForward, Info } from "@mui/icons-material";
 import Star from "@mui/icons-material/Star";
 import Phone from "@mui/icons-material/Phone";
 import WhatsApp from "@mui/icons-material/WhatsApp";
 import { useNavigate } from "react-router-dom";
 import ModalClose from "@mui/joy/ModalClose";
 import Link from "@mui/joy/Link";
+import AspectRatio from "@mui/joy/AspectRatio";
 
 export default function Home() {
   const [params, setParams] = useState<GetServiceParams>({});
-  const {isLoading, data:services, refetch} = useServicesList(params)
+  const {isLoading, isFetching, data:services, refetch} = useServicesList(params)
   const [selectedType, setSelectedType] = useState<ServiceType | undefined>()
   const {isLoading: isTypesLoading, data:serviceTypes} = useServiceTypes()
   const {isLoading: isDetailLoading, data:serviceDetail, mutateAsync:getService} = useGetService()
@@ -61,7 +62,7 @@ export default function Home() {
   }
   const renderTypes = () => {
     if(isTypesLoading){
-      return <CircularProgress variant="soft" />
+      return <Box justifyContent="center"> <CircularProgress variant="soft" /></Box>
     }
 
     return <Grid container direction="row" display="flex" spacing={2} sx={{ flexGrow: 1 }}>
@@ -73,8 +74,40 @@ export default function Home() {
     </Grid>
   }
   const renderItems = () =>{
-    if(isLoading)
-      return <CircularProgress variant="soft" />
+    if(isLoading || isFetching)
+      return <Box width="100%" display="flex" justifyContent="center"><CircularProgress variant="soft" /></Box>
+
+    if(!services?.services.length){
+      return <Box justifyContent="center" width="100%" display="flex">
+        <Alert
+          color="primary"
+          variant="outlined"
+          invertedColors
+          startDecorator={
+            <AspectRatio
+              variant="outlined"
+              ratio="1"
+              sx={{
+                minWidth: 40,
+                borderRadius: '50%',
+              }}
+            >
+              <div>
+                <Info fontSize="large" />
+              </div>
+            </AspectRatio>
+          }
+          sx={{ alignItems: 'flex-start', overflow: 'hidden' }}
+        >
+          <div>
+            <Typography level="title-lg">No Data</Typography>
+            <Typography level="body-sm">
+              No Current Services For The Selected Type.
+            </Typography>
+          </div>
+        </Alert>
+      </Box>
+    }
 
     return services?.services.map((service, index) => (
       <Grid xs={2} sm={4} md={4} key={index}>
