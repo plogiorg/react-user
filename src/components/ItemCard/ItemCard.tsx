@@ -100,7 +100,6 @@ export default function ItemCard(props: ItemCardProps) {
                <Link
                  overlay
                  underline="none"
-                 href="#interactive-card"
                  sx={{ color: 'text.primary' }}
                >
                  {title}

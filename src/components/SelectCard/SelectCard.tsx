@@ -21,7 +21,6 @@ function InteractiveCard(props: InteractiveCardProps) {
   return (
    <div onClick={props.onClick}>
      <Card
-
        variant="outlined"
        orientation="horizontal"
        sx={{

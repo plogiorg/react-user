@@ -10,14 +10,15 @@ import { Alert, CircularProgress, Grid, Modal, ModalDialog, ToggleButtonGroup } 
 import Typography from "@mui/joy/Typography";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import { ArrowForward, Info } from "@mui/icons-material";
+import { ArrowForward, Info, Money } from "@mui/icons-material";
 import Star from "@mui/icons-material/Star";
 import Phone from "@mui/icons-material/Phone";
 import WhatsApp from "@mui/icons-material/WhatsApp";
 import { useNavigate } from "react-router-dom";
 import ModalClose from "@mui/joy/ModalClose";
-import Link from "@mui/joy/Link";
 import AspectRatio from "@mui/joy/AspectRatio";
+import CardContent from "@mui/joy/CardContent";
+import Card from "@mui/joy/Card";
 
 export default function Home() {
   const [params, setParams] = useState<GetServiceParams>({});
@@ -128,15 +129,78 @@ export default function Home() {
 
   const renderServiceDetails = ()=> {
     if (isDetailLoading || !serviceDetail) return <CircularProgress />;
-    return <Stack direction={"column"} spacing={1}>
-      <Typography level={"h3"}>Service By: {`${serviceDetail?.service.userInfo.firstName} ${serviceDetail?.service.userInfo.lastName}`}</Typography>
-      <Typography>{serviceDetail?.service ? serviceDetail.service.description : ""}</Typography>
-      <Typography>{serviceDetail?.service ? serviceDetail.service.address : ""}</Typography>
-      <Link endDecorator={<Phone />}
-            href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}>{serviceDetail?.service.userInfo?.attributes?.phone[0]}</Link>
-      <Link endDecorator={<WhatsApp />}
-            href={`https://api.whatsapp.com/send?phone=${serviceDetail?.service.userInfo?.attributes?.phone[0] || ""}`}>WhatsApp</Link>
-    </Stack>;
+
+    return <Card sx={{ width: 320 }}>
+      <div>
+        <Typography level="title-lg">{selectedType?.title}</Typography>
+        <Typography level="body-sm">{serviceDetail?.service.createdAt.toLocaleString()}</Typography>
+      </div>
+      <AspectRatio minHeight="120px" maxHeight="200px">
+        <img
+          src={selectedType?.image}
+          loading="lazy"
+          alt=""
+        />
+      </AspectRatio>
+      <CardContent orientation="horizontal">
+        <div>
+          <Typography level="body-xs">By:</Typography>
+          <Typography fontSize="lg" fontWeight="lg">
+            {`${serviceDetail?.service.userInfo.firstName} ${serviceDetail?.service.userInfo.lastName}`}
+          </Typography>
+        </div>
+
+        {/*<Button*/}
+        {/*  variant="solid"*/}
+        {/*  endDecorator={<Phone />}*/}
+        {/*  href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}*/}
+        {/*  size="md"*/}
+        {/*  color="primary"*/}
+        {/*  aria-label="Explore Service"*/}
+        {/*  sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}*/}
+        {/*>*/}
+        {/*  Call*/}
+        {/*</Button>*/}
+      </CardContent>
+      <div>
+        <Grid direction="column" gap={1} flexDirection="row" display="flex" spacing={3}>
+          <Button
+            variant="outlined"
+            endDecorator={<WhatsApp />}
+            size="sm"
+            color="success"
+            href={`https://api.whatsapp.com/send?phone=${serviceDetail?.service.userInfo?.attributes?.phone[0] || ""}`}
+            aria-label="Explore Service"
+            sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+          >
+            WhatsApp
+          </Button>
+          <Button
+            variant="outlined"
+            endDecorator={<Phone />}
+            size="sm"
+            href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}
+            color="warning"
+            aria-label="Explore Service"
+            sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+          >
+            Call
+          </Button>
+          <Button
+            variant="outlined"
+            endDecorator={<Money />}
+            size="sm"
+            href={`tel:${serviceDetail?.service.userInfo?.attributes?.phone[0] && ""}`}
+            color="neutral"
+            aria-label="Explore Service"
+            sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+          >
+            Pay
+          </Button>
+        </Grid>
+      </div>
+    </Card>
+
   }
 
   useEffect(() => {
@@ -177,7 +241,9 @@ export default function Home() {
                 PI Network: Your Key to Premium Services
               </Typography>
               <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-                Our website serves the worldwide PI Network currency community with top-notch car rentals, goods transportation, delivery, and logistics services. Valuable services for a valuable currency.              </Typography>
+                Our website serves the worldwide PI Network currency community with top-notch car rentals, goods
+                transportation, delivery, and logistics services. Valuable services for a valuable
+                currency. </Typography>
               <Box
                 sx={{
                   display: 'flex',
@@ -305,7 +371,7 @@ export default function Home() {
       </Box>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <ModalDialog>
+        <ModalDialog sx={{p:1}}>
           <ModalClose />
           {renderServiceDetails()}
         </ModalDialog>
