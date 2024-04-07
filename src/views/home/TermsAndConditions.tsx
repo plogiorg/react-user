@@ -105,7 +105,7 @@ const TermsAndConditions: React.FC = () => {
       <Typography>
         Don't hesitate to contact us if you have any questions. <br/>
         ● Via Email: plogi.info@gmail.com <br/>
-        ● Via Phone Number: 009665402602211 <br/>
+        ● Via Phone Number: +966542602211 <br/>
       </Typography>
     </div>
   </Stack>
