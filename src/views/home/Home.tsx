@@ -34,7 +34,7 @@ export default function Home() {
   useEffect(() =>{
     if(!(serviceTypes?.types[0]?.title == "Featured")){
       serviceTypes?.types.unshift({
-        image: "string",
+        image: "https://cdn-icons-png.freepik.com/512/7466/7466665.png",
         createdAt: new Date(),
         updatedAt: new Date(),
         isActive: true,
