@@ -46,11 +46,12 @@ export type  GetServiceParams = {
   sortBy?:string;
   priceFrom?: number;
   priceTo?: number;
+  isPromoted?:boolean;
   typeId?: number | undefined;
 }
 
 
-export type ServiceType = WithId<{
+export type ServiceType = {
   id: number,
   title: string;
   description: string;
@@ -58,7 +59,7 @@ export type ServiceType = WithId<{
   createdAt: Date,
   updatedAt: Date,
   isActive: true
-}>;
+};
 
 
 

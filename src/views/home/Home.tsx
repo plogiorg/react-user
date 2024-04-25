@@ -31,10 +31,30 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false)
   const navigate = useNavigate()
 
+  useEffect(() =>{
+    if(!(serviceTypes?.types[0]?.title == "Featured")){
+      serviceTypes?.types.unshift({
+        image: "string",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isActive: true,
+        title: "Featured",
+        description: "Our Premium Services",
+        id: 0
+      })
+    }
+  }, [serviceTypes?.types.length])
+
 
  const handleTypeSelect = (type:ServiceType) => {
     setSelectedType(type)
+    if(type.title == "Featured"){
+      setParams({isPromoted: true})
+    }
    if(selectedType?.id == type.id){
+    if(type.title == "Featured"){
+      setParams({isPromoted: false})
+    }
      setSelectedType(undefined)
      return setParams(prevState => {
        const { typeId, ...rest } = prevState;
@@ -207,8 +227,11 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if(params.isPromoted){
+      delete params.typeId
+    }
     refetch();
-  }, [params.search, params.city, params.priceTo, params.typeId]);
+  }, [params.search, params.city, params.priceTo, params.typeId, params.isPromoted]);
 
 
   return (
