@@ -32,6 +32,18 @@ export default function Home() {
   const navigate = useNavigate()
 
   useEffect(() =>{
+      serviceTypes?.types.unshift({
+        image: "https://cdn-icons-png.freepik.com/512/7466/7466665.png",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isActive: true,
+        title: "Featured",
+        description: "Premium Services",
+        id: 0
+      })
+  }, [])
+
+  useEffect(() =>{
     if(!(serviceTypes?.types[0]?.title == "Featured")){
       serviceTypes?.types.unshift({
         image: "https://cdn-icons-png.freepik.com/512/7466/7466665.png",
@@ -45,16 +57,18 @@ export default function Home() {
     }
   }, [serviceTypes?.types.length])
 
+  useEffect(() =>{
+    if(selectedType?.title == "Featured"){
+      setParams({isPromoted: true})
+    }else{
+      setParams({isPromoted: false})
+    }
+  }, [selectedType?.title])
+
 
  const handleTypeSelect = (type:ServiceType) => {
     setSelectedType(type)
-    if(type.title == "Featured"){
-      setParams({isPromoted: true})
-    }
    if(selectedType?.id == type.id){
-    if(type.title == "Featured"){
-      setParams({isPromoted: false})
-    }
      setSelectedType(undefined)
      return setParams(prevState => {
        const { typeId, ...rest } = prevState;
